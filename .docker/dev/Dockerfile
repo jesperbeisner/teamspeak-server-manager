@@ -1,12 +1,11 @@
 FROM php:8.2-cli
 
-ARG USER=teamspeak-manager
+ARG USER=teamspeak-server-manager
 ARG UID=1000
 
 WORKDIR /var/www/html
 
 ENV DEBIAN_FRONTEND=noninteractive
-# RUN apt-get update && apt-get -y upgrade && apt-get -y install --no-install-recommends && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get -y upgrade
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/

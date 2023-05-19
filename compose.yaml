@@ -1,0 +1,21 @@
+services:
+    php:
+        build:
+            dockerfile: .docker/dev/Dockerfile
+            context: .
+            args:
+                USER: ${USER}
+        container_name: teamspeak-server-manager-dev
+        networks:
+            - teamspeak
+        environment:
+            TEAMSPEAK_API_KEY: "BABGLU22fxeJZDuV63nrLxeTelCYHpMo0QVvNRj"
+        volumes:
+            - .:/var/www/html
+        ports:
+            - "9501:9501"
+
+networks:
+    teamspeak:
+        external: true
+        name: teamspeak

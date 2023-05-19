@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+use TeamspeakServerManager\DTO\Client;
+
+/** @var $vars array<mixed> */
+
+/** @var array<Client> $clients */
+$clients = $vars['clients'];
+
+?>
+<table hx-get="/htmx/clients-list" hx-trigger="every 5s" hx-target="find tbody" hx-swap="outerHTML">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Last Connected</th>
+        <th scope="col">Online</th>
+        <th scope="col">Idle</th>
+        <th scope="col">UUID</th>
+    </tr>
+    </thead>
+    <?php require __DIR__ . '/htmx/clients-list.phtml' ?>
+</table>

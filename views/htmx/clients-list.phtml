@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+use TeamspeakServerManager\DTO\Client;
+
+/** @var $vars array<mixed> */
+
+/** @var array<Client> $clients */
+$clients = $vars['clients'];
+
+?>
+<tbody>
+<?php $i = 1 ?>
+<?php foreach ($clients as $client): ?>
+    <tr>
+        <th scope="row"><?= $i ?></th>
+        <td><?= $client->nickname ?></td>
+        <td><?= $client->getLastConnectedReadable() ?></td>
+        <td><?= $client->getOnlineReadable() ?></td>
+        <td><?= $client->getIdleTimeReadable() ?></td>
+        <td><?= $client->uuid ?></td>
+    </tr>
+    <?php $i = $i + 1 ?>
+<?php endforeach; ?>
+</tbody>

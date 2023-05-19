@@ -1,0 +1,31 @@
+<?php /** @var string $content */?>
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link href="/css/pico.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="/js/htmx.js"></script>
+    <title>Teamspeak-Server-Manager</title>
+</head>
+<body>
+    <header class="container">
+        <nav>
+            <ul>
+                <li><strong><a href="/">Teamspeak-Server-Manager</a></strong></li>
+            </ul>
+            <ul>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <?= $content ?>
+    </main>
+
+    <footer class="container"></footer>
+</body>
+</html>

@@ -37,4 +37,13 @@ final readonly class Request
     {
         return strtoupper($this->server['request_method'] ?? throw new RuntimeException('No request method found?'));
     }
+
+    public function isHxRequest(): bool
+    {
+        if (array_key_exists('hx-request', $this->header) && $this->header['hx-request'] === 'true') {
+            return true;
+        }
+
+        return false;
+    }
 }

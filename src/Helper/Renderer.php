@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TeamspeakServerManager\Stdlib;
+namespace TeamspeakServerManager\Helper;
 
 use RuntimeException;
 

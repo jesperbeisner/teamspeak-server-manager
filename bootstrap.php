@@ -6,6 +6,7 @@ use TeamspeakServerManager\Application;
 use TeamspeakServerManager\Interface\FactoryInterface;
 use TeamspeakServerManager\Stdlib\Container;
 use TeamspeakServerManager\Stdlib\Router;
+use TeamspeakServerManager\Table\ClientTable;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -22,6 +23,9 @@ function escape(string $value): string
 $config = require __DIR__ . '/config/config.php';
 
 $container = new Container($config['services']);
+
+$clientTable = new ClientTable();
+$container->set(ClientTable::class, $clientTable);
 
 $router = new Router($config['routes']);
 $container->set(Router::class, $router);

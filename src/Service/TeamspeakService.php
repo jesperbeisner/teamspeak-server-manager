@@ -49,7 +49,7 @@ final readonly class TeamspeakService
                 continue;
             }
 
-            $clients[] = new Client(
+            $clients[$clientInfo['client_unique_identifier']] = new Client(
                 (int) $clientInfo['clid'],
                 $clientInfo['client_unique_identifier'],
                 (int) $clientInfo['client_database_id'],

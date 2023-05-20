@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace TeamspeakServerManager\Stdlib;
 
 use Swoole\Http\Response as SwooleResponse;
+use TeamspeakServerManager\Helper\Renderer;
 
 final readonly class Response
 {
     public const CONTENT_TYPE_HTML = 'text/html; charset=utf-8';
+    public const CONTENT_TYPE_TEXT = 'text/plain; charset=utf-8';
     public const CONTENT_TYPE_CSS = 'text/css; charset=utf-8';
     public const CONTENT_TYPE_JAVA_SCRIPT = 'text/javascript; charset=utf-8';
     public const CONTENT_TYPE_X_ICON = 'image/x-icon';
@@ -26,6 +28,11 @@ final readonly class Response
     public static function html(string $template, array $vars = [], int $statusCode = 200, bool $standalone = false): Response
     {
         return new Response($statusCode, Response::CONTENT_TYPE_HTML, '', $template, $vars, $standalone);
+    }
+
+    public static function text(string $content): Response
+    {
+        return new Response(200, Response::CONTENT_TYPE_TEXT, $content, '', [], false);
     }
 
     public static function css(string $content): Response

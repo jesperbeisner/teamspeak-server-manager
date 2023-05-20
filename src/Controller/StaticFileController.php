@@ -26,7 +26,15 @@ final readonly class StaticFileController implements ControllerInterface
         }
 
         if ($request->getUri() === '/favicon.ico') {
-            return Response::favicon(file_get_contents(__DIR__ . '/../../public/img/favicon.ico'));
+            return Response::favicon(file_get_contents(__DIR__ . '/../../public/favicon.ico'));
+        }
+
+        if ($request->getUri() === '/robots.txt') {
+            return Response::text(file_get_contents(__DIR__ . '/../../public/robots.txt'));
+        }
+
+        if ($request->getUri() === '/humans.txt') {
+            return Response::text(file_get_contents(__DIR__ . '/../../public/humans.txt'));
         }
 
         throw new RuntimeException('Reaching this Exception should not be possible?');

@@ -11,13 +11,14 @@ use TeamspeakServerManager\Timer;
 return [
     'routes' => [
         ['url' => '/', 'methods' => ['GET'], 'controller' => Controller\IndexController::class],
-        ['url' => '/htmx/clients-list', 'methods' => ['GET'], 'controller' => Controller\ClientsListController::class],
 
         // Static stuff
         ['url' => '/css/pico.css', 'methods' => ['GET'], 'controller' => Controller\StaticFileController::class],
         ['url' => '/css/style.css', 'methods' => ['GET'], 'controller' => Controller\StaticFileController::class],
         ['url' => '/js/htmx.js', 'methods' => ['GET'], 'controller' => Controller\StaticFileController::class],
         ['url' => '/favicon.ico', 'methods' => ['GET'], 'controller' => Controller\StaticFileController::class],
+        ['url' => '/robots.txt', 'methods' => ['GET'], 'controller' => Controller\StaticFileController::class],
+        ['url' => '/humans.txt', 'methods' => ['GET'], 'controller' => Controller\StaticFileController::class],
     ],
     'services' => [
         // Controller
@@ -25,7 +26,6 @@ return [
         Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
         Controller\NotFoundController::class => Controller\Factory\NotFoundControllerFactory::class,
         Controller\NotAllowedController::class => Controller\Factory\NotAllowedControllerFactory::class,
-        Controller\ClientsListController::class => Controller\Factory\ClientsListControllerFactory::class,
 
         // Random
         HttpClientInterface::class => Stdlib\Factory\HttpClientFactory::class,

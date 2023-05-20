@@ -61,5 +61,5 @@ docker exec -it teamspeak-server sh -c "echo 172.27.0.0/16 >> query_ip_allowlist
 ### 5. Run teamspeak-server-manager
 
 ```bash
-docker run -p PORT:9501 --network teamspeak -e TEAMSPEAK_API_KEY=PLACEHOLDER --name teamspeak-server-manager teamspeak-server-manager:latest
+docker run -p PORT:9501 --network teamspeak -e TEAMSPEAK_API_KEY=PLACEHOLDER -e DISCORD_WEBHOOK=PLACEHOLDER --name teamspeak-server-manager teamspeak-server-manager:latest
 ```

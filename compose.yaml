@@ -8,8 +8,8 @@ services:
         container_name: teamspeak-server-manager-dev
         networks:
             - teamspeak
-        environment:
-            TEAMSPEAK_API_KEY: "BABGLU22fxeJZDuV63nrLxeTelCYHpMo0QVvNRj"
+        env_file:
+            -  .env
         volumes:
             - .:/var/www/html
         ports:

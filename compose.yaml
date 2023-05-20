@@ -5,7 +5,7 @@ services:
             context: .
             args:
                 USER: ${USER}
-        container_name: teamspeak-server-manager-dev
+        container_name: teamspeak-server-manager
         networks:
             - teamspeak
         env_file:

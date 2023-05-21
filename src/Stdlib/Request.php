@@ -33,9 +33,19 @@ final readonly class Request
         return rawurldecode($uri);
     }
 
+    public function getGet(string $key): ?string
+    {
+        return $this->get[$key] ?? null;
+    }
+
     public function getMethod(): string
     {
         return strtoupper($this->server['request_method'] ?? throw new RuntimeException('No request method found?'));
+    }
+
+    public function isPost(): bool
+    {
+        return $this->getMethod() === 'POST';
     }
 
     public function isHxRequest(): bool

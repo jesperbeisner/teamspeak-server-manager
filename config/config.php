@@ -11,6 +11,7 @@ use TeamspeakServerManager\Timer;
 return [
     'routes' => [
         ['url' => '/', 'methods' => ['GET'], 'controller' => Controller\IndexController::class],
+        ['url' => '/history', 'methods' => ['GET', 'POST'], 'controller' => Controller\HistoryController::class],
 
         // Static stuff
         ['url' => '/css/pico.css', 'methods' => ['GET'], 'controller' => Controller\StaticFileController::class],
@@ -22,8 +23,10 @@ return [
     ],
     'services' => [
         // Controller
-        Controller\StaticFileController::class => Controller\Factory\StaticFileControllerFactory::class,
         Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
+        Controller\HistoryController::class => Controller\Factory\HistoryControllerFactory::class,
+
+        Controller\StaticFileController::class => Controller\Factory\StaticFileControllerFactory::class,
         Controller\NotFoundController::class => Controller\Factory\NotFoundControllerFactory::class,
         Controller\NotAllowedController::class => Controller\Factory\NotAllowedControllerFactory::class,
 

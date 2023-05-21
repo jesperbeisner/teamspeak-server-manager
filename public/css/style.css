@@ -9,3 +9,11 @@ body header, body main, body footer {
 .mb-0 {
     margin-bottom: 0;
 }
+
+.success {
+    color: green;
+}
+
+.failure {
+    color: red;
+}

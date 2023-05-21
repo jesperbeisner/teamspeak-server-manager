@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TeamspeakServerManager\Table;
 
 use Swoole\Table as SwooleTable;
-use TeamspeakServerManager\DTO\Client;
 
 final readonly class ClientTable
 {
@@ -35,11 +34,11 @@ final readonly class ClientTable
         return $clients;
     }
 
-    public function set(Client $client): void
+    public function set(string $uuid, string $nickname): void
     {
-        $this->swooleTable->set($client->uuid, [
-            'uuid' => $client->uuid,
-            'nickname' => $client->nickname,
+        $this->swooleTable->set($uuid, [
+            'uuid' => $uuid,
+            'nickname' => $nickname,
             'time' => time(),
         ]);
     }

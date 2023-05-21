@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+/** @var $vars array<mixed> */
+
+/** @var array<array{message: string, datetime: string}> $clients */
+$histories = $vars['histories'];
+
+?>
+<hgroup>
+    <h1>History</h1>
+    <h2>Last 100 Client Status History</h2>
+</hgroup>
+
+<?php require __DIR__ . '/htmx/history-clients.phtml' ?>

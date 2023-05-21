@@ -6,7 +6,9 @@ use TeamspeakServerManager\Application;
 use TeamspeakServerManager\Interface\FactoryInterface;
 use TeamspeakServerManager\Stdlib\Container;
 use TeamspeakServerManager\Stdlib\Router;
+use TeamspeakServerManager\Table\ClientHistoryTable;
 use TeamspeakServerManager\Table\ClientTable;
+use TeamspeakServerManager\Table\ClientTimeTable;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -24,10 +26,10 @@ $config = require __DIR__ . '/config/config.php';
 
 $container = new Container($config['services']);
 
-$clientTable = new ClientTable();
-$container->set(ClientTable::class, $clientTable);
+$container->set(ClientTable::class, new ClientTable());
+$container->set(ClientHistoryTable::class, new ClientHistoryTable());
+$container->set(ClientTimeTable::class, new ClientTimeTable());
 
-$router = new Router($config['routes']);
-$container->set(Router::class, $router);
+$container->set(Router::class, new Router($config['routes']));
 
 return new Application($container);

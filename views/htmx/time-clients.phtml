@@ -1,0 +1,38 @@
+<?php
+
+declare(strict_types=1);
+
+use TeamspeakServerManager\Helper\Formatter;
+
+/** @var $vars array<mixed> */
+
+/** @var array<array{uuid: string, nickname: string, time: int}> $times */
+$times = $vars['times'];
+
+?>
+<article hx-get="/time" hx-trigger="every 15s" hx-swap="outerHTML">
+    <figure>
+        <table role="grid">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nickname</th>
+                <th scope="col">UUID</th>
+                <th scope="col">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php $i = 1 ?>
+            <?php foreach ($times as $time): ?>
+                <tr>
+                    <th scope="row"><?= $i ?></th>
+                    <td><?= escape($time['nickname']) ?></td>
+                    <td title="<?= escape($time['uuid']) ?>"><?= substr(escape($time['uuid']), 0, 10) . '...' ?></td>
+                    <td><?= Formatter::secondsToHumanReadableWithDays($time['time']) ?></td>
+                </tr>
+                <?php $i = $i + 1 ?>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </figure>
+</article>

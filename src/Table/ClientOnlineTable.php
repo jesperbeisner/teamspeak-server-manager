@@ -6,7 +6,7 @@ namespace TeamspeakServerManager\Table;
 
 use Swoole\Table as SwooleTable;
 
-final readonly class ClientTable
+final readonly class ClientOnlineTable
 {
     private SwooleTable $swooleTable;
 
@@ -14,8 +14,8 @@ final readonly class ClientTable
     {
         $this->swooleTable = new SwooleTable(1024);
 
-        $this->swooleTable->column('uuid', SwooleTable::TYPE_STRING, 255);
-        $this->swooleTable->column('nickname', SwooleTable::TYPE_STRING, 255);
+        $this->swooleTable->column('uuid', SwooleTable::TYPE_STRING, 50);
+        $this->swooleTable->column('nickname', SwooleTable::TYPE_STRING, 50);
         $this->swooleTable->column('time', SwooleTable::TYPE_INT);
 
         $this->swooleTable->create();

@@ -19,13 +19,9 @@ final readonly class IndexController implements ControllerInterface
     public function execute(Request $request): Response
     {
         if ($request->isHxRequest()) {
-            return Response::html('htmx/online-clients.phtml', [
-                'clients' => $this->teamspeakService->getClients()
-            ], 200, true);
+            return Response::html('htmx/online-clients.phtml', ['clients' => $this->teamspeakService->getClients()], 200, true);
         }
 
-        return Response::html('index.phtml', [
-            'clients' => $this->teamspeakService->getClients(),
-        ]);
+        return Response::html('index.phtml', ['clients' => $this->teamspeakService->getClients()]);
     }
 }

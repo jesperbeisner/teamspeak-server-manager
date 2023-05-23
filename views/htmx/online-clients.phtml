@@ -11,19 +11,20 @@ $clients = $vars['clients'];
 
 ?>
 <?php if ($clients === []): ?>
-    <article hx-get="/" hx-trigger="every 5s" hx-swap="outerHTML">
+    <article hx-get="/" hx-trigger="every 15s" hx-swap="outerHTML">
         <p class="text-center mb-0">
             No one is currently online
         </p>
     </article>
 <?php else: ?>
-    <article hx-get="/" hx-trigger="every 5s" hx-swap="outerHTML">
-        <figure class="mb-0" >
-            <table role="grid" class="mb-0">
+    <article hx-get="/" hx-trigger="every 15s" hx-swap="outerHTML">
+        <figure>
+            <table role="grid">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Name</th>
+                    <th scope="col">Nickname</th>
+                    <th scope="col">UUID</th>
                     <th scope="col">Connected</th>
                     <th scope="col">Online</th>
                     <th scope="col">Idle</th>
@@ -35,6 +36,7 @@ $clients = $vars['clients'];
                     <tr>
                         <th scope="row"><?= $i ?></th>
                         <td><?= escape($client->nickname) ?></td>
+                        <td title="<?= escape($client->uuid) ?>"><?= substr(escape($client->uuid), 0, 10) . '...' ?></td>
                         <td><?= $client->getLastConnectedReadable() ?></td>
                         <td><?= $client->getOnlineReadable() ?></td>
                         <td><?= $client->getIdleTimeReadable() ?></td>

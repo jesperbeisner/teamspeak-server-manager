@@ -17,7 +17,7 @@ $application = require __DIR__ . '/../bootstrap.php';
 $swooleServer = new SwooleServer('0.0.0.0', 9501);
 
 $swooleServer->on('Start', function (): void {
-    echo 'OpenSwoole http server is started at http://127.0.0.1:9501' . PHP_EOL;
+    echo 'Swoole http server is started at http://127.0.0.1:9501' . PHP_EOL;
 });
 
 $swooleServer->on('Request', function (SwooleRequest $swooleRequest, SwooleResponse $swooleResponse) use ($application): void {
@@ -31,7 +31,7 @@ $swooleServer->on('Request', function (SwooleRequest $swooleRequest, SwooleRespo
     }
 });
 
-SwooleTimer::tick(2500, function() use ($application): void {
+SwooleTimer::tick(1000, function() use ($application): void {
     try {
         $application->timer(ClientTimer::class)->run();
     } catch (Throwable $e) {

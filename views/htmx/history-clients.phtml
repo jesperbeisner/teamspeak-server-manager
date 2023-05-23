@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-/** @var $vars array<mixed> */
-
 use TeamspeakServerManager\Enum\StatusEnum;
 use TeamspeakServerManager\Helper\Formatter;
+
+/** @var $vars array<mixed> */
 
 /** @var array<array{message: string, datetime: string}> $histories */
 $histories = $vars['histories'];
@@ -14,47 +14,36 @@ $histories = $vars['histories'];
 $search = $vars['search'];
 
 ?>
-<?php if ($histories === []): ?>
-    <article hx-get="<?= $search === null ? '/history' : '/history?search=' . escape($search) ?>" hx-trigger="every 30s" hx-swap="outerHTML">
-        <label for="search" aria-hidden="true" style="display: none">Search</label>
-        <input type="text" id="search" name="search" value="<?= $search === null ? '' : escape($search) ?>" placeholder="Search..." hx-get="/history" hx-trigger="keyup changed delay:500ms, search" hx-target="closest article" hx-swap="outerHTML">
+<article hx-get="<?= $search === null ? '/history' : '/history?search=' . escape($search) ?>" hx-trigger="every 15s" hx-swap="outerHTML">
+    <label for="search" aria-hidden="true" style="display: none">Search</label>
+    <input type="text" id="search" name="search" value="<?= $search === null ? '' : escape($search) ?>" placeholder="Search..." hx-get="/history" hx-trigger="keyup changed delay:500ms, search" hx-target="closest article" hx-swap="outerHTML">
 
-        <p class="text-center mb-0">
-            No history available
-        </p>
-    </article>
-<?php else: ?>
-    <article hx-get="<?= $search === null ? '/history' : '/history?search=' . escape($search) ?>" hx-trigger="every 30s" hx-swap="outerHTML">
-        <label for="search" aria-hidden="true" style="display: none">Search</label>
-        <input type="text" id="search" name="search" value="<?= $search === null ? '' : escape($search) ?>" placeholder="Search..." hx-get="/history" hx-trigger="keyup changed delay:500ms, search" hx-target="closest article" hx-swap="outerHTML">
-
-        <figure class="mb-0" >
-            <table role="grid" class="mb-0">
-                <thead>
+    <figure>
+        <table role="grid">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nickname</th>
+                <th scope="col">UUID</th>
+                <th scope="col">Status</th>
+                <th scope="col">Time</th>
+                <th scope="col">Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php $i = 1 ?>
+            <?php foreach ($histories as $history): ?>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nickname</th>
-                    <th scope="col">UUID</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Date</th>
+                    <th scope="row"><?= $i ?></th>
+                    <td><?= escape($history['nickname']) ?></td>
+                    <td title="<?= escape($history['uuid']) ?>"><?= substr(escape($history['uuid']), 0, 10) . '...' ?></td>
+                    <td class="<?= $history['status'] === StatusEnum::ONLINE ? 'success' : 'failure' ?>"><?= escape($history['status']->value) ?></td>
+                    <td><?= $history['time'] === 999_999 ? '-' : Formatter::secondsToHumanReadable($history['time']) ?></td>
+                    <td><?= escape($history['datetime']) ?></td>
                 </tr>
-                </thead>
-                <tbody>
-                <?php $i = 1 ?>
-                <?php foreach ($histories as $history): ?>
-                    <tr>
-                        <th scope="row"><?= $i ?></th>
-                        <td><?= escape($history['nickname']) ?></td>
-                        <td title="<?= escape($history['uuid']) ?>"><?= substr(escape($history['uuid']), 0, 10) . '...' ?></td>
-                        <td class="<?= $history['status'] === StatusEnum::ONLINE ? 'success' : 'failure' ?>"><?= escape($history['status']->value) ?></td>
-                        <td><?= $history['time'] === 999_999 ? '-' : Formatter::secondsToHumanReadable($history['time']) ?></td>
-                        <td><?= escape($history['datetime']) ?></td>
-                    </tr>
-                    <?php $i = $i + 1 ?>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        </figure>
-    </article>
-<?php endif; ?>
+                <?php $i = $i + 1 ?>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </figure>
+</article>

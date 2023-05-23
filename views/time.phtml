@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+/** @var $vars array<mixed> */
+
+/** @var array<array{uuid: string, nickname: string, time: int}> $times */
+$times = $vars['times'];
+
+?>
+<hgroup>
+    <h1>Time</h1>
+    <h2>Total Connection Time</h2>
+</hgroup>
+
+<?php require __DIR__ . '/htmx/time-clients.phtml' ?>

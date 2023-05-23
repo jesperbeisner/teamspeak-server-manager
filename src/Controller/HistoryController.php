@@ -34,15 +34,9 @@ final readonly class HistoryController implements ControllerInterface
                 }
             }
 
-            return Response::html('htmx/history-clients.phtml', [
-                'histories' => $histories,
-                'search' => $search,
-            ], 200, true);
+            return Response::html('htmx/history-clients.phtml', ['histories' => $histories, 'search' => $search], 200, true);
         }
 
-        return Response::html('history.phtml', [
-            'histories' => $this->clientHistoryTable->getAll(),
-            'search' => null,
-        ]);
+        return Response::html('history.phtml', ['histories' => $this->clientHistoryTable->getAll(), 'search' => null]);
     }
 }

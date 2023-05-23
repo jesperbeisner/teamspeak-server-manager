@@ -8,13 +8,13 @@ use TeamspeakServerManager\Enum\StatusEnum;
 use TeamspeakServerManager\Interface\TimerInterface;
 use TeamspeakServerManager\Service\TeamspeakService;
 use TeamspeakServerManager\Table\ClientHistoryTable;
-use TeamspeakServerManager\Table\ClientTable;
+use TeamspeakServerManager\Table\ClientOnlineTable;
 use TeamspeakServerManager\Table\ClientTimeTable;
 
 final readonly class ClientTimer implements TimerInterface
 {
     public function __construct(
-        private ClientTable $clientTable,
+        private ClientOnlineTable $clientOnlineTable,
         private ClientHistoryTable $clientHistoryTable,
         private ClientTimeTable $clientTimeTable,
         private TeamspeakService $teamspeakService,
@@ -23,34 +23,25 @@ final readonly class ClientTimer implements TimerInterface
 
     public function run(): void
     {
-        $lastOnlineClients = $this->clientTable->getAll();
+        $lastOnlineClients = $this->clientOnlineTable->getAll();
         $currentOnlineClients = $this->teamspeakService->getClients();
 
         foreach ($lastOnlineClients as $lastOnlineClient) {
             // Client went offline: Save message and delete from table
             if (!array_key_exists($lastOnlineClient['uuid'], $currentOnlineClients)) {
-                $this->clientHistoryTable->set(
-                    $lastOnlineClient['uuid'],
-                    $lastOnlineClient['nickname'],
-                    StatusEnum::OFFLINE,
-                    time() - $lastOnlineClient['time'],
-                );
-
-                $this->clientTable->delete($lastOnlineClient['uuid']);
+                $this->clientHistoryTable->set($lastOnlineClient['uuid'], $lastOnlineClient['nickname'], StatusEnum::OFFLINE, time() - $lastOnlineClient['time']);
+                $this->clientOnlineTable->delete($lastOnlineClient['uuid']);
             }
         }
 
         foreach ($currentOnlineClients as $currentOnlineClient) {
-            // Client wenn online: Save message and add to table
-            if (!array_key_exists($currentOnlineClient->uuid, $lastOnlineClients)) {
-                $this->clientHistoryTable->set(
-                    $currentOnlineClient->uuid,
-                    $currentOnlineClient->nickname,
-                    StatusEnum::ONLINE,
-                    999_999,
-                );
+            // Every tick update the client total online time
+            $this->clientTimeTable->addSecond($currentOnlineClient->uuid, $currentOnlineClient->nickname,);
 
-                $this->clientTable->set($currentOnlineClient->uuid, $currentOnlineClient->nickname);
+            // Client went online: Save message and add to table
+            if (!array_key_exists($currentOnlineClient->uuid, $lastOnlineClients)) {
+                $this->clientHistoryTable->set($currentOnlineClient->uuid, $currentOnlineClient->nickname, StatusEnum::ONLINE, 999_999);
+                $this->clientOnlineTable->set($currentOnlineClient->uuid, $currentOnlineClient->nickname);
             }
         }
     }

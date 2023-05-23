@@ -19,8 +19,8 @@ final readonly class ClientHistoryTable
     {
         $this->swooleTable = new SwooleTable(128);
 
-        $this->swooleTable->column('uuid', SwooleTable::TYPE_STRING, 255);
-        $this->swooleTable->column('nickname', SwooleTable::TYPE_STRING, 255);
+        $this->swooleTable->column('uuid', SwooleTable::TYPE_STRING, 50);
+        $this->swooleTable->column('nickname', SwooleTable::TYPE_STRING, 50);
         $this->swooleTable->column('status', SwooleTable::TYPE_STRING, 50);
         $this->swooleTable->column('time', SwooleTable::TYPE_INT);
         $this->swooleTable->column('datetime', SwooleTable::TYPE_STRING, 50);

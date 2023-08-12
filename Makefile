@@ -4,3 +4,6 @@ help: ## Show this help
 
 run: ## Runs CS-Fixer, PHPUnit and PHPStan
 	docker compose up
+
+phpstan: ## Runs PHPStan
+	docker compose exec php vendor/bin/phpstan

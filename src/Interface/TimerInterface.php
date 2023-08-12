@@ -6,5 +6,5 @@ namespace TeamspeakServerManager\Interface;
 
 interface TimerInterface
 {
-    public function run(): void;
+    public function start(): void;
 }

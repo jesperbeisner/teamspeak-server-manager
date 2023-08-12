@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace TeamspeakServerManager;
 
-use TeamspeakServerManager\Exception\ThisShouldNeverHappenException;
 use TeamspeakServerManager\Interface\ResponseInterface;
 use TeamspeakServerManager\Interface\TimerInterface;
 use TeamspeakServerManager\Stdlib\Container;
 use TeamspeakServerManager\Stdlib\Request;
+use TeamspeakServerManager\Stdlib\Response\HtmlResponse;
 use TeamspeakServerManager\Stdlib\Router;
+use Throwable;
 
 final readonly class Application
 {
@@ -20,14 +21,18 @@ final readonly class Application
 
     public function run(Request $request): ResponseInterface
     {
-        $router = $this->container->get(Router::class);
-        $routeInfo = $router->route($request->getMethod(), $request->getUri());
+        try {
+            $router = $this->container->get(Router::class);
+            $routeInfo = $router->route($request->getMethod(), $request->getUri());
 
-        $request->setRouteInfo($routeInfo);
+            $request->setRouteInfo($routeInfo);
 
-        $controller = $this->container->get($routeInfo->controller);
+            $controller = $this->container->get($routeInfo->controller);
 
-        return $controller->execute($request);
+            return $controller->execute($request);
+        } catch (Throwable $e) {
+            return new HtmlResponse('error/server.phtml', [], 500);
+        }
     }
 
     /**

@@ -8,7 +8,6 @@ use Swoole\Http\Response as SwooleResponse;
 use Swoole\Timer as SwooleTimer;
 use TeamspeakServerManager\Application;
 use TeamspeakServerManager\Stdlib\Request;
-use TeamspeakServerManager\Stdlib\Response\HtmlResponse;
 use TeamspeakServerManager\Timer\ClientTimer;
 
 /** @var Application $application */
@@ -21,23 +20,11 @@ $swooleServer->on('Start', function (): void {
 });
 
 $swooleServer->on('Request', function (SwooleRequest $swooleRequest, SwooleResponse $swooleResponse) use ($application): void {
-    try {
-        $application->run(Request::fromSwooleRequest($swooleRequest))->send($swooleResponse);
-    } catch (Throwable $e) {
-        // TODO: Log Exception
-        echo $e->getMessage() . PHP_EOL;
-
-        (new HtmlResponse('error/server.phtml', [], 500))->send($swooleResponse);
-    }
+    $application->run(Request::fromSwooleRequest($swooleRequest))->send($swooleResponse);
 });
 
-SwooleTimer::tick(1000, function() use ($application): void {
-    try {
-        $application->timer(ClientTimer::class)->run();
-    } catch (Throwable $e) {
-        // TODO: Log Exception
-        echo $e->getMessage() . PHP_EOL;
-    }
+SwooleTimer::tick(2500, function() use ($application): void {
+    $application->timer(ClientTimer::class)->run();
 });
 
 $swooleServer->start();

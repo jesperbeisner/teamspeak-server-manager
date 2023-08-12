@@ -12,11 +12,6 @@ use TeamspeakServerManager\Table\ClientTimeTable;
 
 require __DIR__ . '/vendor/autoload.php';
 
-function escape(string $value): string
-{
-    return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8');
-}
-
 /** @var array{
  *     routes: array<array{url: string, methods: array<string>, controller: class-string, action: string}>,
  *     services: array<class-string, class-string<FactoryInterface>>

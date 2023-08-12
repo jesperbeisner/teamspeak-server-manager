@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-use TeamspeakServerManager\Helper\Formatter;
-
 /** @var $vars array<mixed> */
 
 /** @var array<array{uuid: string, nickname: string, time: int}> $times */
 $times = $vars['times'];
 
 ?>
-<article hx-get="/time" hx-trigger="every 15s" hx-swap="outerHTML">
+<article hx-get="/time" hx-trigger="every 5s" hx-swap="outerHTML">
     <figure>
         <table role="grid">
             <thead>
@@ -28,7 +26,7 @@ $times = $vars['times'];
                     <th scope="row"><?= $i ?></th>
                     <td><?= escape($time['nickname']) ?></td>
                     <td title="<?= escape($time['uuid']) ?>"><?= substr(escape($time['uuid']), 0, 10) . '...' ?></td>
-                    <td><?= Formatter::secondsToHumanReadableWithDays($time['time']) ?></td>
+                    <td><?= secondsToHumanReadable($time['time']) ?></td>
                 </tr>
                 <?php $i = $i + 1 ?>
             <?php endforeach; ?>

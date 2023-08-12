@@ -10,7 +10,7 @@ use TeamspeakServerManager\Stdlib\Request;
 use TeamspeakServerManager\Stdlib\Response\HtmlResponse;
 use TeamspeakServerManager\Table\ClientHistoryTable;
 
-readonly class HistoryController implements ControllerInterface
+final readonly class HistoryController implements ControllerInterface
 {
     public function __construct(
         private ClientHistoryTable $clientHistoryTable,

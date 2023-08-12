@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace TeamspeakServerManager\Stdlib;
 
 use FastRoute;
-use RuntimeException;
 use TeamspeakServerManager\Controller\NotFoundController;
 use TeamspeakServerManager\DTO\RouteInfo;
+use TeamspeakServerManager\Exception\ThisShouldNeverHappenException;
 
 final readonly class Router
 {
@@ -41,6 +41,6 @@ final readonly class Router
             return new RouteInfo($routeInfo[1], $routeInfo[2]);
         }
 
-        throw new RuntimeException('We should never end up down here? Did FastRoute change?');
+        throw new ThisShouldNeverHappenException();
     }
 }

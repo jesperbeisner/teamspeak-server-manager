@@ -13,7 +13,7 @@ final readonly class Renderer
     /**
      * @param array<string, mixed> $vars
      */
-    public static function render(string $template, array $vars = [], bool $standalone = false): string
+    public static function render(string $template, array $vars = [], bool $withLayout = true): string
     {
         $templateFile = Renderer::VIEWS_DIRECTORY . '/' . $template;
         $layoutFile = Renderer::VIEWS_DIRECTORY . '/layout/layout.phtml';
@@ -28,7 +28,7 @@ final readonly class Renderer
             throw new RuntimeException(sprintf('"ob_get_clean" returned false for template file "%s".', $templateFile));
         }
 
-        if ($standalone === false) {
+        if ($withLayout === true) {
             if (!is_file($layoutFile)) {
                 throw new RuntimeException(sprintf('Layout file "%s" does not exist.', $layoutFile));
             }

@@ -32,6 +32,6 @@ final readonly class TeamspeakClient
             throw new RuntimeException(sprintf('Something went wrong when making a request to url "%s" - Code: "%d" - Message: "%s".', $url, $body['status']['code'], $body['status']['message']));
         }
 
-        return $body['body'];
+        return $body['body'] ?? [];
     }
 }

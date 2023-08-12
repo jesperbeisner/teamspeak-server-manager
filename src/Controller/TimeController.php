@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace TeamspeakServerManager\Controller;
 
 use TeamspeakServerManager\Interface\ControllerInterface;
+use TeamspeakServerManager\Interface\ResponseInterface;
 use TeamspeakServerManager\Stdlib\Request;
-use TeamspeakServerManager\Stdlib\Response;
+use TeamspeakServerManager\Stdlib\Response\HtmlResponse;
 use TeamspeakServerManager\Table\ClientTimeTable;
 
 final readonly class TimeController implements ControllerInterface
@@ -16,16 +17,16 @@ final readonly class TimeController implements ControllerInterface
     ) {
     }
 
-    public function execute(Request $request): Response
+    public function execute(Request $request): ResponseInterface
     {
         $times = $this->clientTimeTable->getAll();
 
         usort($times, fn(array $item1, array $item2) => $item2['time'] <=> $item1['time']);
 
         if ($request->isHxRequest()) {
-            return Response::html('htmx/time-clients.phtml', ['times' => $times], 200, true);
+            return new HtmlResponse('htmx/time-clients.phtml', ['times' => $times], 200, [], false);
         }
 
-        return Response::html('time.phtml', ['times' => $times]);
+        return new HtmlResponse('time.phtml', ['times' => $times]);
     }
 }

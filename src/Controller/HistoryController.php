@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace TeamspeakServerManager\Controller;
 
 use TeamspeakServerManager\Interface\ControllerInterface;
+use TeamspeakServerManager\Interface\ResponseInterface;
 use TeamspeakServerManager\Stdlib\Request;
-use TeamspeakServerManager\Stdlib\Response;
+use TeamspeakServerManager\Stdlib\Response\HtmlResponse;
 use TeamspeakServerManager\Table\ClientHistoryTable;
 
-final readonly class HistoryController implements ControllerInterface
+readonly class HistoryController implements ControllerInterface
 {
     public function __construct(
         private ClientHistoryTable $clientHistoryTable,
     ) {
     }
 
-    public function execute(Request $request): Response
+    public function execute(Request $request): ResponseInterface
     {
         if ($request->isHxRequest()) {
             $histories = $this->clientHistoryTable->getAll();
@@ -34,9 +35,15 @@ final readonly class HistoryController implements ControllerInterface
                 }
             }
 
-            return Response::html('htmx/history-clients.phtml', ['histories' => $histories, 'search' => $search], 200, true);
+            return new HtmlResponse('htmx/history-clients.phtml', [
+                'histories' => $histories,
+                'search' => $search,
+            ], 200, [], false);
         }
 
-        return Response::html('history.phtml', ['histories' => $this->clientHistoryTable->getAll(), 'search' => null]);
+        return new HtmlResponse('history.phtml', [
+            'histories' => $this->clientHistoryTable->getAll(),
+            'search' => null,
+        ]);
     }
 }

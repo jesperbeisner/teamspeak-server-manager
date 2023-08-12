@@ -6,14 +6,17 @@ namespace TeamspeakServerManager\Stdlib;
 
 use RuntimeException;
 use Swoole\Http\Request as SwooleRequest;
+use TeamspeakServerManager\DTO\RouteInfo;
 
-final readonly class Request
+final class Request
 {
+    private RouteInfo $routeInfo;
+
     public function __construct(
-        private array $header,
-        private array $server,
-        private array $get,
-        private array $post,
+        private readonly array $header,
+        private readonly array $server,
+        private readonly array $get,
+        private readonly array $post,
     ) {
     }
 
@@ -41,6 +44,27 @@ final readonly class Request
     public function getMethod(): string
     {
         return strtoupper($this->server['request_method'] ?? throw new RuntimeException('No request method found?'));
+    }
+
+    public function setRouteInfo(RouteInfo $routeInfo): void
+    {
+        if (isset($this->routeInfo)) {
+            throw new RuntimeException('RouteInfo is already set!');
+        }
+
+        $this->routeInfo = $routeInfo;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getRouteVars(): array
+    {
+        if (isset($this->routeInfo)) {
+            return $this->routeInfo->vars;
+        }
+
+        throw new RuntimeException('RouteInfo is not set yet, how?!');
     }
 
     public function isPost(): bool

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace TeamspeakServerManager;
 
+use TeamspeakServerManager\Exception\ThisShouldNeverHappenException;
+use TeamspeakServerManager\Interface\ResponseInterface;
 use TeamspeakServerManager\Interface\TimerInterface;
 use TeamspeakServerManager\Stdlib\Container;
 use TeamspeakServerManager\Stdlib\Request;
-use TeamspeakServerManager\Stdlib\Response;
 use TeamspeakServerManager\Stdlib\Router;
 
 final readonly class Application
@@ -17,11 +18,12 @@ final readonly class Application
     ) {
     }
 
-    public function run(Request $request): Response
+    public function run(Request $request): ResponseInterface
     {
-        /** @var Router $router */
         $router = $this->container->get(Router::class);
         $routeInfo = $router->route($request->getMethod(), $request->getUri());
+
+        $request->setRouteInfo($routeInfo);
 
         $controller = $this->container->get($routeInfo->controller);
 

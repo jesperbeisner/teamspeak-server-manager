@@ -10,7 +10,7 @@ use TeamspeakServerManager\Service\TeamspeakService;
 use TeamspeakServerManager\Stdlib\Request;
 use TeamspeakServerManager\Stdlib\Response\HtmlResponse;
 
-final readonly class IndexController implements ControllerInterface
+final readonly class SettingController implements ControllerInterface
 {
     public function __construct(
         private TeamspeakService $teamspeakService,
@@ -19,10 +19,12 @@ final readonly class IndexController implements ControllerInterface
 
     public function execute(Request $request): ResponseInterface
     {
-        if ($request->isHxRequest()) {
-            return new HtmlResponse('htmx/online-clients.phtml', ['clients' => $this->teamspeakService->getClients()], 200, [], false);
+        if ($request->isHxRequest() && $request->isPost()) {
+            $this->teamspeakService->resetChannels();
+
+            return new HtmlResponse('htmx/reset-channels.phtml', [], 200, [], false);
         }
 
-        return new HtmlResponse('index.phtml', ['clients' => $this->teamspeakService->getClients()]);
+        return new HtmlResponse('settings.phtml');
     }
 }

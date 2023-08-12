@@ -15,6 +15,49 @@ final readonly class TeamspeakService
     ) {
     }
 
+    public function resetChannels(): void
+    {
+        $availableChannels = $this->teamspeakClient->request('/1/channellist?-topic&-flags&-voice&-limits&-icon&-secondsempty&-banners');
+        foreach ($availableChannels as $channel) {
+            if ($channel['channel_flag_default'] !== '1') {
+                $this->teamspeakClient->request(sprintf('/1/channeldelete?cid=%s&force=1', $channel['cid']));
+            }
+        }
+
+        $channelLayout = require __DIR__ . '/../../config/layout.php';
+        $spacerId = 0;
+
+        foreach ($channelLayout as $channel) {
+            /** @var string $channelName */
+            $channelName = $channel['name'];
+
+            if ($channel['spacer'] === true) {
+                $channelName = urlencode("[*spacer$spacerId]") . $channelName;
+                $spacerId++;
+            }
+
+            if ($channel['center'] === true) {
+                $channelName = urlencode("[cspacer$spacerId]") . $channelName;
+                $spacerId++;
+            }
+
+            $url = "/1/channelcreate?channel_flag_permanent=1&channel_name=$channelName";
+
+            if (-1 === $channel['max_clients']) {
+                $url .= "&channel_maxclients=-1&channel_flag_maxclients_unlimited=1";
+            } else {
+                $url .= sprintf('&channel_maxclients=%d&channel_flag_maxclients_unlimited=0', $channel['max_clients']);
+            }
+
+            $response = $this->teamspeakClient->request($url);
+            $channelId = (int) $response[0]['cid'];
+
+            if ($channel['talk_power'] > 0) {
+                $this->teamspeakClient->request(sprintf('/1/channeladdperm?cid=%d&permsid=i_client_needed_talk_power&permvalue=%d', $channelId, $channel['talk_power']));
+            }
+        }
+    }
+
     public function getServerInfo(): ServerInfo
     {
         $response = $this->teamspeakClient->request('/1/serverinfo');

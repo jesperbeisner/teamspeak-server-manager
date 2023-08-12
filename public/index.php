@@ -23,7 +23,7 @@ $swooleServer->on('Request', function (SwooleRequest $swooleRequest, SwooleRespo
     $application->run(Request::fromSwooleRequest($swooleRequest))->send($swooleResponse);
 });
 
-SwooleTimer::tick(2500, function() use ($application): void {
+SwooleTimer::tick(1000, function() use ($application): void {
     $application->timer(ClientTimer::class)->start();
 });
 

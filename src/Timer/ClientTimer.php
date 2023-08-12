@@ -38,7 +38,7 @@ final readonly class ClientTimer implements TimerInterface
 
             foreach ($currentOnlineClients as $currentOnlineClient) {
                 // Every tick update the client total online time
-                $this->clientTimeTable->addSecond($currentOnlineClient->uuid, $currentOnlineClient->nickname,);
+                $this->clientTimeTable->addSecond($currentOnlineClient->uuid, $currentOnlineClient->nickname);
 
                 // Client went online: Save message and add to table
                 if (!array_key_exists($currentOnlineClient->uuid, $lastOnlineClients)) {

@@ -11,13 +11,13 @@ $clients = $vars['clients'];
 
 ?>
 <?php if ($clients === []): ?>
-    <article hx-get="/" hx-trigger="every 15s" hx-swap="outerHTML">
+    <article hx-get="/" hx-trigger="every 3s" hx-swap="outerHTML">
         <p class="text-center mb-0">
             No one is currently online
         </p>
     </article>
 <?php else: ?>
-    <article hx-get="/" hx-trigger="every 15s" hx-swap="outerHTML">
+    <article hx-get="/" hx-trigger="every 3s" hx-swap="outerHTML">
         <figure>
             <table role="grid">
                 <thead>

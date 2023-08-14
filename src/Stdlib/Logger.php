@@ -16,6 +16,9 @@ final readonly class Logger
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function log(LogLevelEnum $logLevel, string $message, array $context = []): void
     {
         if (!is_file($this->logFile)) {
@@ -32,9 +35,11 @@ final readonly class Logger
             throw new RuntimeException(sprintf('Could not open log file "%s".', $this->logFile));
         }
 
-        $dateTime = DateTime::createFromFormat('U.u', (string) microtime(true));
-        $dateTime->setTimezone(new DateTimeZone('Europe/Berlin'));
+        if (false === $dateTime = DateTime::createFromFormat('U.u', (string) microtime(true))) {
+            throw new RuntimeException('Could not create DateTime from format.');
+        }
 
+        $dateTime->setTimezone(new DateTimeZone('Europe/Berlin'));
         $json = json_encode($context, JSON_THROW_ON_ERROR);
 
         $data = sprintf('%s %s %s %s', $dateTime->format('m-d-Y H:i:s.u'), strtoupper($logLevel->value), $message, $json) . PHP_EOL;
@@ -48,11 +53,17 @@ final readonly class Logger
         }
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function error(string $message, array $context = []): void
     {
         $this->log(LogLevelEnum::ERROR, $message, $context);
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function info(string $message, array $context = []): void
     {
         $this->log(LogLevelEnum::INFO, $message, $context);

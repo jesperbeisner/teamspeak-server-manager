@@ -6,6 +6,7 @@ namespace TeamspeakServerManager\DTO;
 
 use DateTime;
 use DateTimeZone;
+use TeamspeakServerManager\Helper\View;
 
 final readonly class Client
 {
@@ -34,11 +35,11 @@ final readonly class Client
 
     public function getOnlineReadable(): string
     {
-        return secondsToHumanReadable(time() - $this->lastConnected);
+        return View::secondsToHumanReadable(time() - $this->lastConnected);
     }
 
     public function getIdleTimeReadable(): string
     {
-        return secondsToHumanReadable((int) floor($this->idleTime / 1000));
+        return View::secondsToHumanReadable((int) floor($this->idleTime / 1000));
     }
 }

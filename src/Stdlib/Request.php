@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace TeamspeakServerManager\Stdlib;
 
-use RuntimeException;
 use Swoole\Http\Request as SwooleRequest;
 use TeamspeakServerManager\DTO\RouteInfo;
+use TeamspeakServerManager\Exception\RuntimeException;
 
 final class Request
 {
     private RouteInfo $routeInfo;
 
+    /**
+     * @param array<string, mixed> $header
+     * @param array<string, mixed> $server
+     * @param array<string, mixed> $get
+     * @param array<string, mixed> $post
+     */
     public function __construct(
         private readonly array $header,
         private readonly array $server,
@@ -27,7 +33,11 @@ final class Request
 
     public function getUri(): string
     {
-        $uri = $this->server['request_uri'] ?? throw new RuntimeException('No request uri found?');
+        $uri = $this->server['request_uri'] ?? null;
+
+        if (!is_string($uri)) {
+            throw new RuntimeException('No request uri found?');
+        }
 
         if (false !== $pos = strpos($uri, '?')) {
             $uri = substr($uri, 0, $pos);
@@ -43,7 +53,13 @@ final class Request
 
     public function getMethod(): string
     {
-        return strtoupper($this->server['request_method'] ?? throw new RuntimeException('No request method found?'));
+        $requestMethod = $this->server['request_method'] ?? null;
+
+        if (!is_string($requestMethod)) {
+            throw new RuntimeException('No request method found?');
+        }
+
+        return strtoupper($requestMethod);
     }
 
     public function setRouteInfo(RouteInfo $routeInfo): void

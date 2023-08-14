@@ -5,22 +5,29 @@ declare(strict_types=1);
 namespace TeamspeakServerManager\Stdlib\Response;
 
 use Swoole\Http\Response as SwooleResponse;
-use TeamspeakServerManager\Helper\Renderer;
 use TeamspeakServerManager\Interface\ResponseInterface;
+use TeamspeakServerManager\Stdlib\Renderer;
 
-final readonly class HtmlResponse implements ResponseInterface
+final class HtmlResponse implements ResponseInterface
 {
+    private Renderer $renderer;
+
     /**
      * @param array<string, mixed> $vars
      * @param array<string, string> $headers
      */
     public function __construct(
-        private string $template,
-        private array $vars = [],
-        private int $statusCode = 200,
-        private array $headers = [],
-        private bool $withLayout = true,
+        private readonly string $template,
+        private readonly array $vars = [],
+        private readonly int $statusCode = 200,
+        private readonly array $headers = [],
+        private readonly bool $withLayout = true,
     ) {
+    }
+
+    public function setRenderer(Renderer $renderer): void
+    {
+        $this->renderer = $renderer;
     }
 
     public function send(SwooleResponse $swooleResponse): void
@@ -32,6 +39,6 @@ final readonly class HtmlResponse implements ResponseInterface
             $swooleResponse->setHeader($key, $value);
         }
 
-        $swooleResponse->end(Renderer::render($this->template, $this->vars, $this->withLayout));
+        $swooleResponse->end($this->renderer->render($this->template, $this->vars, $this->withLayout));
     }
 }

@@ -2,21 +2,24 @@
 
 declare(strict_types=1);
 
-namespace TeamspeakServerManager\Helper;
+namespace TeamspeakServerManager\Stdlib;
 
-use RuntimeException;
+use TeamspeakServerManager\Exception\RuntimeException;
 
 final readonly class Renderer
 {
-    private const VIEWS_DIRECTORY = __DIR__ . '/../../views';
+    public function __construct(
+        private string $viewsDirectory,
+    ) {
+    }
 
     /**
      * @param array<string, mixed> $vars
      */
-    public static function render(string $template, array $vars = [], bool $withLayout = true): string
+    public function render(string $template, array $vars = [], bool $withLayout = true): string
     {
-        $templateFile = Renderer::VIEWS_DIRECTORY . '/' . $template;
-        $layoutFile = Renderer::VIEWS_DIRECTORY . '/layout/layout.phtml';
+        $templateFile = $this->viewsDirectory . '/' . $template;
+        $layoutFile = $this->viewsDirectory . '/layout/layout.phtml';
 
         return (function (string $templateFile, string $layoutFile, array $vars, bool $withLayout): string {
             extract($vars);

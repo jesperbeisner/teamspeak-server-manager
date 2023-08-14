@@ -73,4 +73,9 @@ final readonly class Config
     {
         return $this->config['routes'];
     }
+
+    public function getBasePath(): string
+    {
+        return $this->config['app']['basePath'];
+    }
 }

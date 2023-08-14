@@ -9,6 +9,7 @@ use TeamspeakServerManager\Interface\ResponseInterface;
 use TeamspeakServerManager\Interface\TimerInterface;
 use TeamspeakServerManager\Stdlib\Config;
 use TeamspeakServerManager\Stdlib\Container;
+use TeamspeakServerManager\Stdlib\Renderer;
 use TeamspeakServerManager\Stdlib\Request;
 use TeamspeakServerManager\Stdlib\Response\HtmlResponse;
 use TeamspeakServerManager\Stdlib\Router;
@@ -31,9 +32,18 @@ final readonly class Application
 
             $controller = $this->container->get($routeInfo->controller);
 
-            return $controller->execute($request);
+            $response = $controller->execute($request);
+
+            if ($response instanceof HtmlResponse) {
+                $response->setRenderer($this->container->get(Renderer::class));
+            }
+
+            return $response;
         } catch (Throwable $e) {
-            return new HtmlResponse('error/server.phtml', ['exception' => $e, 'appEnv' => $this->container->get(Config::class)->getAppEnv()], 500);
+            $response = new HtmlResponse('error/server.phtml', ['exception' => $e, 'appEnv' => $this->container->get(Config::class)->getAppEnv()], 500);
+            $response->setRenderer($this->container->get(Renderer::class));
+
+            return $response;
         }
     }
 

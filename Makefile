@@ -6,4 +6,7 @@ run: ## Runs CS-Fixer, PHPUnit and PHPStan
 	docker compose up
 
 phpstan: ## Runs PHPStan
-	docker compose exec php vendor/bin/phpstan
+	docker compose exec php vendor/bin/phpstan analyse --memory-limit=-1
+
+phpstan-baseline: ## Runs PHPStan and generates new baseline
+	docker compose exec php vendor/bin/phpstan analyse --memory-limit=-1 --generate-baseline=.phpstan/phpstan-baseline.php

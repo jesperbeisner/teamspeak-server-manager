@@ -11,7 +11,7 @@ use TeamspeakServerManager\Stdlib\TeamspeakClient;
 
 final readonly class TeamspeakClientFactory implements FactoryInterface
 {
-    public function build(Container $container): object
+    public function build(Container $container): TeamspeakClient
     {
         return new TeamspeakClient($container->get(HttpClientInterface::class));
     }

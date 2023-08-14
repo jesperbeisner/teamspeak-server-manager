@@ -1,2 +1,15 @@
+<?php
+
+declare(strict_types=1);
+
+/** @var string $appEnv */
+/** @var Exception $exception */
+
+?>
 <h1 class="text-center">500 - Server error</h1>
 <p class="text-center">Something went wrong on my side (╯°□°）╯︵ ┻━┻</p>
+
+<?php if ($appEnv === 'dev'): ?>
+    <h2 class="text-center">Exception Message:</h2>
+    <p class="text-center"><?= $exception->getMessage() ?></p>
+<?php endif; ?>

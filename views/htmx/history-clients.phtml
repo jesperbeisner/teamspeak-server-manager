@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 use TeamspeakServerManager\Enum\StatusEnum;
 
-/** @var $vars array<mixed> */
-
 /** @var array<array{message: string, datetime: string}> $histories */
-$histories = $vars['histories'];
-
 /** @var string|null $search */
-$search = $vars['search'];
 
 ?>
 <article hx-get="<?= $search === null ? '/history' : '/history?search=' . escape($search) ?>" hx-trigger="every 5s" hx-swap="outerHTML">

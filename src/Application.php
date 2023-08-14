@@ -31,7 +31,7 @@ final readonly class Application
 
             return $controller->execute($request);
         } catch (Throwable $e) {
-            return new HtmlResponse('error/server.phtml', [], 500);
+            return new HtmlResponse('error/server.phtml', ['exception' => $e], 500);
         }
     }
 

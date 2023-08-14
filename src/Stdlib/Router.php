@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace TeamspeakServerManager\Stdlib;
 
 use FastRoute;
+use TeamspeakServerManager\Controller\NotAllowedController;
 use TeamspeakServerManager\Controller\NotFoundController;
 use TeamspeakServerManager\DTO\RouteInfo;
 use TeamspeakServerManager\Exception\ThisShouldNeverHappenException;
+use TeamspeakServerManager\Interface\ControllerInterface;
 
 final readonly class Router
 {
     private FastRoute\Dispatcher $dispatcher;
 
     /**
-     * @param array<array{url: string, methods: array<string>, controller: class-string, action: string}> $routes
+     * @param array<array{url: string, methods: array<string>, controller: class-string<ControllerInterface>}> $routes
      */
     public function __construct(array $routes)
     {
@@ -34,7 +36,7 @@ final readonly class Router
         }
 
         if ($routeInfo[0] === FastRoute\Dispatcher::METHOD_NOT_ALLOWED) {
-            return new RouteInfo(NotFoundController::class);
+            return new RouteInfo(NotAllowedController::class);
         }
 
         if ($routeInfo[0] === FastRoute\Dispatcher::FOUND) {

@@ -28,6 +28,7 @@ return [
 
     // Stdlib
     Stdlib\TeamspeakClient::class => Stdlib\Factory\TeamspeakClientFactory::class,
+    Stdlib\Logger::class => Stdlib\Factory\LoggerFactory::class,
     Stdlib\Renderer::class => Stdlib\Factory\RendererFactory::class,
 
     // Timer

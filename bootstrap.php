@@ -16,6 +16,7 @@ $config = new Config(__DIR__ . '/config');
 
 $container = new Container($config->getServices());
 
+$container->set(Config::class, $config);
 $container->set(Router::class, new Router($config->getRoutes()));
 
 $container->set(ClientOnlineTable::class, new ClientOnlineTable());

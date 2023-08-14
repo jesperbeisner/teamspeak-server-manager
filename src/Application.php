@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace TeamspeakServerManager;
 
+use TeamspeakServerManager\Exception\ThisShouldNeverHappenException;
 use TeamspeakServerManager\Interface\ResponseInterface;
 use TeamspeakServerManager\Interface\TimerInterface;
+use TeamspeakServerManager\Stdlib\Config;
 use TeamspeakServerManager\Stdlib\Container;
 use TeamspeakServerManager\Stdlib\Request;
 use TeamspeakServerManager\Stdlib\Response\HtmlResponse;
@@ -31,7 +33,7 @@ final readonly class Application
 
             return $controller->execute($request);
         } catch (Throwable $e) {
-            return new HtmlResponse('error/server.phtml', ['exception' => $e], 500);
+            return new HtmlResponse('error/server.phtml', ['exception' => $e, 'appEnv' => $this->container->get(Config::class)->getAppEnv()], 500);
         }
     }
 

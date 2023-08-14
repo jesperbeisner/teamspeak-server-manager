@@ -3,14 +3,15 @@
 declare(strict_types=1);
 
 use TeamspeakServerManager\Enum\StatusEnum;
+use TeamspeakServerManager\Helper\View;
 
 /** @var array<array{message: string, datetime: string}> $histories */
 /** @var string|null $search */
 
 ?>
-<article hx-get="<?= $search === null ? '/history' : '/history?search=' . escape($search) ?>" hx-trigger="every 5s" hx-swap="outerHTML">
+<article hx-get="<?= $search === null ? '/history' : '/history?search=' . View::escape($search) ?>" hx-trigger="every 5s" hx-swap="outerHTML">
     <label for="search" aria-hidden="true" style="display: none">Search</label>
-    <input type="text" id="search" name="search" value="<?= $search === null ? '' : escape($search) ?>" placeholder="Search..." hx-get="/history" hx-trigger="keyup changed delay:500ms, search" hx-target="closest article" hx-swap="outerHTML">
+    <input type="text" id="search" name="search" value="<?= $search === null ? '' : View::escape($search) ?>" placeholder="Search..." hx-get="/history" hx-trigger="keyup changed delay:500ms, search" hx-target="closest article" hx-swap="outerHTML">
 
     <figure>
         <table role="grid">
@@ -29,11 +30,11 @@ use TeamspeakServerManager\Enum\StatusEnum;
             <?php foreach ($histories as $history): ?>
                 <tr>
                     <th scope="row"><?= $i ?></th>
-                    <td><?= escape($history['nickname']) ?></td>
-                    <td title="<?= escape($history['uuid']) ?>"><?= substr(escape($history['uuid']), 0, 10) . '...' ?></td>
-                    <td class="<?= $history['status'] === StatusEnum::ONLINE ? 'success' : 'failure' ?>"><?= escape($history['status']->value) ?></td>
-                    <td><?= $history['time'] === 999_999 ? '-' : secondsToHumanReadable($history['time']) ?></td>
-                    <td><?= escape($history['datetime']) ?></td>
+                    <td><?= View::escape($history['nickname']) ?></td>
+                    <td title="<?= View::escape($history['uuid']) ?>"><?= substr(View::escape($history['uuid']), 0, 10) . '...' ?></td>
+                    <td class="<?= $history['status'] === StatusEnum::ONLINE ? 'success' : 'failure' ?>"><?= View::escape($history['status']->value) ?></td>
+                    <td><?= $history['time'] === 999_999 ? '-' : View::secondsToHumanReadable($history['time']) ?></td>
+                    <td><?= View::escape($history['datetime']) ?></td>
                 </tr>
                 <?php $i = $i + 1 ?>
             <?php endforeach; ?>

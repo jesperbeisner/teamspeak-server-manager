@@ -26,10 +26,7 @@
     "autoload": {
         "psr-4": {
             "TeamspeakServerManager\\": "src/"
-        },
-        "files": [
-            "functions.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

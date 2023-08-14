@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use TeamspeakServerManager\Helper\View;
+
 /** @var array<array{uuid: string, nickname: string, time: int}> $times */
 
 ?>
@@ -21,9 +23,9 @@ declare(strict_types=1);
             <?php foreach ($times as $time): ?>
                 <tr>
                     <th scope="row"><?= $i ?></th>
-                    <td><?= escape($time['nickname']) ?></td>
-                    <td title="<?= escape($time['uuid']) ?>"><?= substr(escape($time['uuid']), 0, 10) . '...' ?></td>
-                    <td><?= secondsToHumanReadable($time['time']) ?></td>
+                    <td><?= View::escape($time['nickname']) ?></td>
+                    <td title="<?= View::escape($time['uuid']) ?>"><?= substr(View::escape($time['uuid']), 0, 10) . '...' ?></td>
+                    <td><?= View::secondsToHumanReadable($time['time']) ?></td>
                 </tr>
                 <?php $i = $i + 1 ?>
             <?php endforeach; ?>

@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace TeamspeakServerManager\Controller;
 
 use TeamspeakServerManager\Interface\ControllerInterface;
-use TeamspeakServerManager\Interface\ResponseInterface;
 use TeamspeakServerManager\Service\TeamspeakService;
 use TeamspeakServerManager\Stdlib\Request;
-use TeamspeakServerManager\Stdlib\Response\HtmlResponse;
+use TeamspeakServerManager\Stdlib\Response;
 
 final readonly class SettingController implements ControllerInterface
 {
@@ -17,14 +16,16 @@ final readonly class SettingController implements ControllerInterface
     ) {
     }
 
-    public function execute(Request $request): ResponseInterface
+    public function execute(Request $request, Response $response): void
     {
         if ($request->isHxRequest() && $request->isPost()) {
             $this->teamspeakService->resetChannels();
 
-            return new HtmlResponse('htmx/reset-channels.phtml', [], 200, [], false);
+            $response->html('htmx/reset-channels.phtml', [], 200, false);
+
+            return;
         }
 
-        return new HtmlResponse('settings.phtml');
+        $response->html('settings.phtml');
     }
 }

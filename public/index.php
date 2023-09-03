@@ -8,6 +8,7 @@ use Swoole\Http\Response as SwooleResponse;
 use Swoole\Timer as SwooleTimer;
 use TeamspeakServerManager\Application;
 use TeamspeakServerManager\Stdlib\Request;
+use TeamspeakServerManager\Stdlib\Response;
 use TeamspeakServerManager\Timer\ClientTimer;
 
 /** @var Application $application */
@@ -20,7 +21,7 @@ $swooleServer->on('Start', function (): void {
 });
 
 $swooleServer->on('Request', function (SwooleRequest $swooleRequest, SwooleResponse $swooleResponse) use ($application): void {
-    $application->run(Request::fromSwooleRequest($swooleRequest))->send($swooleResponse);
+    $application->run(Request::fromSwooleRequest($swooleRequest), new Response())->send($swooleResponse);
 });
 
 SwooleTimer::tick(1000, function() use ($application): void {

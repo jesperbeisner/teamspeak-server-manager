@@ -13,6 +13,8 @@ final readonly class TimeControllerFactory implements FactoryInterface
 {
     public function build(Container $container): TimeController
     {
-        return new TimeController($container->get(ClientTimeTable::class));
+        return new TimeController(
+            $container->get(ClientTimeTable::class),
+        );
     }
 }

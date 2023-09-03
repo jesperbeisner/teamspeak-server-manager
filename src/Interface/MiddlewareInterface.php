@@ -7,7 +7,7 @@ namespace TeamspeakServerManager\Interface;
 use TeamspeakServerManager\Stdlib\Request;
 use TeamspeakServerManager\Stdlib\Response;
 
-interface ControllerInterface
+interface MiddlewareInterface
 {
-    public function execute(Request $request, Response $response): void;
+    public function handle(Request $request, Response $response): void;
 }

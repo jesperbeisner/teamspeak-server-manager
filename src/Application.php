@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace TeamspeakServerManager;
 
-use TeamspeakServerManager\Exception\ThisShouldNeverHappenException;
-use TeamspeakServerManager\Interface\ResponseInterface;
 use TeamspeakServerManager\Interface\TimerInterface;
 use TeamspeakServerManager\Stdlib\Config;
 use TeamspeakServerManager\Stdlib\Container;
-use TeamspeakServerManager\Stdlib\Renderer;
 use TeamspeakServerManager\Stdlib\Request;
-use TeamspeakServerManager\Stdlib\Response\HtmlResponse;
-use TeamspeakServerManager\Stdlib\Router;
-use Throwable;
+use TeamspeakServerManager\Stdlib\Response;
 
 final readonly class Application
 {
@@ -22,29 +17,17 @@ final readonly class Application
     ) {
     }
 
-    public function run(Request $request): ResponseInterface
+    public function run(Request $request, Response $response): Response
     {
-        try {
-            $router = $this->container->get(Router::class);
-            $routeInfo = $router->route($request->getMethod(), $request->getUri());
+        foreach ($this->container->get(Config::class)->getMiddlewares() as $middleware) {
+            $this->container->get($middleware)->handle($request, $response);
 
-            $request->setRouteInfo($routeInfo);
-
-            $controller = $this->container->get($routeInfo->controller);
-
-            $response = $controller->execute($request);
-
-            if ($response instanceof HtmlResponse) {
-                $response->setRenderer($this->container->get(Renderer::class));
+            if ($request->isPropagationStopped()) {
+                break;
             }
-
-            return $response;
-        } catch (Throwable $e) {
-            $response = new HtmlResponse('error/server.phtml', ['exception' => $e, 'appEnv' => $this->container->get(Config::class)->getAppEnv()], 500);
-            $response->setRenderer($this->container->get(Renderer::class));
-
-            return $response;
         }
+
+        return $response;
     }
 
     /**

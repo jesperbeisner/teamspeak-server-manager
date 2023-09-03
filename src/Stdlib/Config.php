@@ -8,6 +8,7 @@ use RuntimeException;
 use SplFileInfo;
 use TeamspeakServerManager\Interface\ControllerInterface;
 use TeamspeakServerManager\Interface\FactoryInterface;
+use TeamspeakServerManager\Interface\MiddlewareInterface;
 
 final readonly class Config
 {
@@ -72,6 +73,14 @@ final readonly class Config
     public function getRoutes(): array
     {
         return $this->config['routes'];
+    }
+
+    /**
+     * @return  array<int, class-string<MiddlewareInterface>>
+     */
+    public function getMiddlewares(): array
+    {
+        return $this->config['middlewares'];
     }
 
     public function getBasePath(): string

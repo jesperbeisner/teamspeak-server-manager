@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace TeamspeakServerManager\Controller;
 
 use TeamspeakServerManager\Interface\ControllerInterface;
-use TeamspeakServerManager\Interface\ResponseInterface;
 use TeamspeakServerManager\Stdlib\Request;
-use TeamspeakServerManager\Stdlib\Response\HtmlResponse;
+use TeamspeakServerManager\Stdlib\Response;
 
 final readonly class NotAllowedController implements ControllerInterface
 {
-    public function execute(Request $request): ResponseInterface
+    public function execute(Request $request, Response $response): void
     {
-        return new HtmlResponse('error/not-allowed.phtml', [], 405);
+        $response->html('error/not-allowed.phtml', [], 405);
     }
 }

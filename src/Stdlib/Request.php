@@ -7,10 +7,12 @@ namespace TeamspeakServerManager\Stdlib;
 use Swoole\Http\Request as SwooleRequest;
 use TeamspeakServerManager\DTO\RouteInfo;
 use TeamspeakServerManager\Exception\RuntimeException;
+use TeamspeakServerManager\Interface\ControllerInterface;
 
 final class Request
 {
     private RouteInfo $routeInfo;
+    private bool $stopPropagation = false;
 
     /**
      * @param array<string, mixed> $header
@@ -83,6 +85,18 @@ final class Request
         throw new RuntimeException('RouteInfo is not set yet, how?!');
     }
 
+    /**
+     * @return class-string<ControllerInterface>
+     */
+    public function getController(): string
+    {
+        if (isset($this->routeInfo)) {
+            return $this->routeInfo->controller;
+        }
+
+        throw new RuntimeException('RouteInfo is not set yet, how?!');
+    }
+
     public function isPost(): bool
     {
         return $this->getMethod() === 'POST';
@@ -95,5 +109,15 @@ final class Request
         }
 
         return false;
+    }
+
+    public function stopPropagation(): void
+    {
+        $this->stopPropagation = true;
+    }
+
+    public function isPropagationStopped(): bool
+    {
+        return $this->stopPropagation;
     }
 }

@@ -13,6 +13,8 @@ final readonly class SettingControllerFactory implements FactoryInterface
 {
     public function build(Container $container): SettingController
     {
-        return new SettingController($container->get(TeamspeakService::class));
+        return new SettingController(
+            $container->get(TeamspeakService::class),
+        );
     }
 }

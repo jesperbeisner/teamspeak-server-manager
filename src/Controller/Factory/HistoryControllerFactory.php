@@ -13,6 +13,8 @@ final readonly class HistoryControllerFactory implements FactoryInterface
 {
     public function build(Container $container): HistoryController
     {
-        return new HistoryController($container->get(ClientHistoryTable::class));
+        return new HistoryController(
+            $container->get(ClientHistoryTable::class),
+        );
     }
 }

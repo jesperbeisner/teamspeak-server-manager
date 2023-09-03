@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace TeamspeakServerManager\Controller;
 
 use TeamspeakServerManager\Interface\ControllerInterface;
-use TeamspeakServerManager\Interface\ResponseInterface;
 use TeamspeakServerManager\Service\TeamspeakService;
 use TeamspeakServerManager\Stdlib\Request;
-use TeamspeakServerManager\Stdlib\Response\HtmlResponse;
+use TeamspeakServerManager\Stdlib\Response;
 
 final readonly class IndexController implements ControllerInterface
 {
@@ -17,12 +16,14 @@ final readonly class IndexController implements ControllerInterface
     ) {
     }
 
-    public function execute(Request $request): ResponseInterface
+    public function execute(Request $request, Response $response): void
     {
         if ($request->isHxRequest()) {
-            return new HtmlResponse('htmx/online-clients.phtml', ['clients' => $this->teamspeakService->getClients()], 200, [], false);
+            $response->html('htmx/online-clients.phtml', ['clients' => $this->teamspeakService->getClients()], 200, false);
+
+            return;
         }
 
-        return new HtmlResponse('index.phtml', ['clients' => $this->teamspeakService->getClients()]);
+        $response->html('index.phtml', ['clients' => $this->teamspeakService->getClients()]);
     }
 }

@@ -13,6 +13,8 @@ final readonly class InfoControllerFactory implements FactoryInterface
 {
     public function build(Container $container): InfoController
     {
-        return new InfoController($container->get(TeamspeakService::class));
+        return new InfoController(
+            $container->get(TeamspeakService::class),
+        );
     }
 }

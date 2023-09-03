@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use TeamspeakServerManager\Controller;
+use TeamspeakServerManager\Manager;
+use TeamspeakServerManager\Middleware;
 use TeamspeakServerManager\Service;
 use TeamspeakServerManager\Stdlib;
 use TeamspeakServerManager\Timer;
@@ -19,6 +21,15 @@ return [
     Controller\StaticFileController::class => Controller\Factory\StaticFileControllerFactory::class,
     Controller\NotFoundController::class => Controller\Factory\NotFoundControllerFactory::class,
     Controller\NotAllowedController::class => Controller\Factory\NotAllowedControllerFactory::class,
+
+    // Manager
+    Manager\ControllerManager::class => Manager\Factory\ControllerManagerFactory::class,
+
+    // Middleware
+    Middleware\RequestUuidMiddleware::class => Middleware\Factory\RequestUuidMiddlewareFactory::class,
+    Middleware\RouterMiddleware::class => Middleware\Factory\RouterMiddlewareFactory::class,
+    Middleware\ControllerMiddleware::class => Middleware\Factory\ControllerMiddlewareFactory::class,
+    Middleware\RenderMiddleware::class => Middleware\Factory\RenderMiddlewareFactory::class,
 
     // Random
     HttpClientInterface::class => Stdlib\Factory\HttpClientFactory::class,

@@ -13,6 +13,8 @@ final readonly class IndexControllerFactory implements FactoryInterface
 {
     public function build(Container $container): IndexController
     {
-        return new IndexController($container->get(TeamspeakService::class));
+        return new IndexController(
+            $container->get(TeamspeakService::class),
+        );
     }
 }
